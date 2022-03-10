@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  gobank:
+    build: .
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+    environment:
+      - PORT=8080
+      - DATASOURCE_URL=admin:admin@tcp(mysql:3306)/gobank?parseTime=true
+    networks:
+      - ws
+  mysql:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    volumes:
+      -  ./script/sql:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=gobank
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_ROOT_PASSWORD=admin
+    networks:
+        - ws
+
+networks:
+  ws:
+    driver: bridge
