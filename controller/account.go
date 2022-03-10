@@ -17,14 +17,14 @@ type FetchAccountByIdDTO struct {
 }
 
 type AccountController struct {
-	service domain.AccountService
+	*domain.AccountService
 }
 
-func NewAccountController(service domain.AccountService) AccountController {
-	return AccountController{service}
+func NewAccountController(service *domain.AccountService) *AccountController {
+	return &AccountController{service}
 }
 
-func (controller AccountController) CreateAccountHandler() func(c *gin.Context) {
+func (controller *AccountController) CreateAccountHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateAccountDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -32,7 +32,7 @@ func (controller AccountController) CreateAccountHandler() func(c *gin.Context) 
 			return
 		}
 
-		account, err := controller.service.Create(dto.DocumentNumber)
+		account, err := controller.AccountService.Create(dto.DocumentNumber)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -42,7 +42,7 @@ func (controller AccountController) CreateAccountHandler() func(c *gin.Context) 
 	}
 }
 
-func (controller AccountController) FetchAccountHandler() func(c *gin.Context) {
+func (controller *AccountController) FetchAccountHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto FetchAccountByIdDTO
 		if err := c.ShouldBindUri(&dto); err != nil {
@@ -50,7 +50,7 @@ func (controller AccountController) FetchAccountHandler() func(c *gin.Context) {
 			return
 		}
 
-		account, err := controller.service.FetchByID(dto.ID)
+		account, err := controller.AccountService.FetchByID(dto.ID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return

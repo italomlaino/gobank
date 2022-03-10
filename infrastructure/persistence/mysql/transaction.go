@@ -9,11 +9,11 @@ import (
 type MysqlTransactionRepository struct {
 }
 
-func NewMysqlTransactionRepository() MysqlTransactionRepository {
-	return MysqlTransactionRepository{}
+func NewMysqlTransactionRepository() *MysqlTransactionRepository {
+	return &MysqlTransactionRepository{}
 }
 
-func (repository MysqlTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
+func (repository *MysqlTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
 	db := Connect()
 	defer db.Close()
 
@@ -41,7 +41,7 @@ func (repository MysqlTransactionRepository) Create(accountID int64, operationTy
 	}, nil
 }
 
-func (repository MysqlTransactionRepository) FetchAll() (*[]domain.Transaction, error) {
+func (repository *MysqlTransactionRepository) FetchAll() (*[]domain.Transaction, error) {
 	db := Connect()
 	defer db.Close()
 

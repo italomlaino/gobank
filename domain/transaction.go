@@ -25,17 +25,17 @@ type TransactionRepository interface {
 }
 
 type TransactionService struct {
-	repository TransactionRepository
+	TransactionRepository
 }
 
-func NewTransactionService(repository TransactionRepository) TransactionService {
-	return TransactionService{repository}
+func NewTransactionService(repository TransactionRepository) *TransactionService {
+	return &TransactionService{repository}
 }
 
-func (service TransactionService) Create(accountID int64, operationTypeID OperationType, amount int64) (*Transaction, error) {
-	return service.repository.Create(accountID, operationTypeID, amount, time.Now())
+func (service *TransactionService) Create(accountID int64, operationTypeID OperationType, amount int64) (*Transaction, error) {
+	return service.TransactionRepository.Create(accountID, operationTypeID, amount, time.Now())
 }
 
-func (service TransactionService) FetchAll() (*[]Transaction, error) {
-	return service.repository.FetchAll()
+func (service *TransactionService) FetchAll() (*[]Transaction, error) {
+	return service.TransactionRepository.FetchAll()
 }

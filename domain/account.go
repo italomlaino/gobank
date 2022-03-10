@@ -13,26 +13,26 @@ type AccountRepository interface {
 }
 
 type AccountService struct {
-	repository AccountRepository
+	AccountRepository
 }
 
-func NewAccountService(repository AccountRepository) AccountService {
-	return AccountService{repository}
+func NewAccountService(repository AccountRepository) *AccountService {
+	return &AccountService{repository}
 }
 
-func (service AccountService) Create(documentNumber int64) (*Account, error) {
-	return service.repository.Create(documentNumber)
+func (service *AccountService) Create(documentNumber int64) (*Account, error) {
+	return service.AccountRepository.Create(documentNumber)
 }
 
-func (service AccountService) Delete(id int64) error {
-	service.repository.Delete(id)
+func (service *AccountService) Delete(id int64) error {
+	service.AccountRepository.Delete(id)
 	return nil
 }
 
-func (service AccountService) FetchByDocumentNumber(documentNumber int64) (*Account, error) {
-	return service.repository.FetchByDocumentNumber(documentNumber)
+func (service *AccountService) FetchByDocumentNumber(documentNumber int64) (*Account, error) {
+	return service.AccountRepository.FetchByDocumentNumber(documentNumber)
 }
 
-func (service AccountService) FetchByID(id int64) (*Account, error) {
-	return service.repository.FetchByID(id)
+func (service *AccountService) FetchByID(id int64) (*Account, error) {
+	return service.AccountRepository.FetchByID(id)
 }

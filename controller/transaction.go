@@ -9,7 +9,7 @@ import (
 )
 
 type TransactionController struct {
-	service domain.TransactionService
+	*domain.TransactionService
 }
 
 type CreateTransactionDTO struct {
@@ -18,11 +18,11 @@ type CreateTransactionDTO struct {
 	Amount          int64                `json:"amount" binding:"required"`
 }
 
-func NewTransactionController(service domain.TransactionService) TransactionController {
-	return TransactionController{service}
+func NewTransactionController(service *domain.TransactionService) *TransactionController {
+	return &TransactionController{service}
 }
 
-func (controller TransactionController) CreateTransationHandler() func(c *gin.Context) {
+func (controller *TransactionController) CreateTransationHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateTransactionDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -30,7 +30,7 @@ func (controller TransactionController) CreateTransationHandler() func(c *gin.Co
 			return
 		}
 
-		transaction, err := controller.service.Create(dto.AccountID, dto.OperationTypeID, dto.Amount)
+		transaction, err := controller.TransactionService.Create(dto.AccountID, dto.OperationTypeID, dto.Amount)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -40,9 +40,9 @@ func (controller TransactionController) CreateTransationHandler() func(c *gin.Co
 	}
 }
 
-func (controller TransactionController) ListTransationHandler() func(c *gin.Context) {
+func (controller *TransactionController) ListTransationHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		accounts, err := controller.service.FetchAll()
+		accounts, err := controller.TransactionService.FetchAll()
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return

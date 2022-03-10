@@ -10,11 +10,11 @@ import (
 type MysqlAccountRepository struct {
 }
 
-func NewMysqlAccountRepository() MysqlAccountRepository {
-	return MysqlAccountRepository{}
+func NewMysqlAccountRepository() *MysqlAccountRepository {
+	return &MysqlAccountRepository{}
 }
 
-func (repository MysqlAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
+func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
 	db := Connect()
 	defer db.Close()
 
@@ -39,7 +39,7 @@ func (repository MysqlAccountRepository) Create(documentNumber int64) (*domain.A
 	}, nil
 }
 
-func (repository MysqlAccountRepository) Delete(id int64) error {
+func (repository *MysqlAccountRepository) Delete(id int64) error {
 	db := Connect()
 	defer db.Close()
 
@@ -63,7 +63,7 @@ func (repository MysqlAccountRepository) Delete(id int64) error {
 	return nil
 }
 
-func (repository MysqlAccountRepository) FetchByDocumentNumber(documentNumber int64) (*domain.Account, error) {
+func (repository *MysqlAccountRepository) FetchByDocumentNumber(documentNumber int64) (*domain.Account, error) {
 	db := Connect()
 	defer db.Close()
 
@@ -92,7 +92,7 @@ func (repository MysqlAccountRepository) FetchByDocumentNumber(documentNumber in
 	return nil, fmt.Errorf("could not find an account with document_number := %d", documentNumber)
 }
 
-func (repository MysqlAccountRepository) FetchByID(id int64) (*domain.Account, error) {
+func (repository *MysqlAccountRepository) FetchByID(id int64) (*domain.Account, error) {
 	db := Connect()
 	defer db.Close()
 
