@@ -8,8 +8,13 @@ import (
 	"github.com/italomlaino/gobank/domain"
 )
 
-type TransactionController struct {
-	*domain.TransactionService
+type TransactionController interface {
+	CreateTransationHandler() func(c *gin.Context)
+	ListTransationHandler() func(c *gin.Context)
+}
+
+type DefaultTransactionController struct {
+	domain.TransactionService
 }
 
 type CreateTransactionDTO struct {
@@ -18,11 +23,11 @@ type CreateTransactionDTO struct {
 	Amount          int64                `json:"amount" binding:"required"`
 }
 
-func NewTransactionController(service *domain.TransactionService) *TransactionController {
-	return &TransactionController{service}
+func NewTransactionController(service domain.TransactionService) *DefaultTransactionController {
+	return &DefaultTransactionController{service}
 }
 
-func (controller *TransactionController) CreateTransationHandler() func(c *gin.Context) {
+func (controller *DefaultTransactionController) CreateTransationHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateTransactionDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -40,7 +45,7 @@ func (controller *TransactionController) CreateTransationHandler() func(c *gin.C
 	}
 }
 
-func (controller *TransactionController) ListTransationHandler() func(c *gin.Context) {
+func (controller *DefaultTransactionController) ListTransationHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		accounts, err := controller.TransactionService.FetchAll()
 		if err != nil {

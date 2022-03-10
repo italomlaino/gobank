@@ -16,15 +16,20 @@ type FetchAccountByIdDTO struct {
 	ID int64 `uri:"accountId" binding:"required"`
 }
 
-type AccountController struct {
-	*domain.AccountService
+type AccountController interface {
+	CreateAccountHandler() func(c *gin.Context)
+	FetchAccountHandler() func(c *gin.Context)
 }
 
-func NewAccountController(service *domain.AccountService) *AccountController {
-	return &AccountController{service}
+type DefaultAccountController struct {
+	domain.AccountService
 }
 
-func (controller *AccountController) CreateAccountHandler() func(c *gin.Context) {
+func NewAccountController(service domain.AccountService) *DefaultAccountController {
+	return &DefaultAccountController{service}
+}
+
+func (controller *DefaultAccountController) CreateAccountHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateAccountDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -42,7 +47,7 @@ func (controller *AccountController) CreateAccountHandler() func(c *gin.Context)
 	}
 }
 
-func (controller *AccountController) FetchAccountHandler() func(c *gin.Context) {
+func (controller *DefaultAccountController) FetchAccountHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto FetchAccountByIdDTO
 		if err := c.ShouldBindUri(&dto); err != nil {
