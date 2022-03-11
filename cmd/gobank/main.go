@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"github.com/italomlaino/gobank/controller"
+	"github.com/italomlaino/gobank/application/controller"
+	"github.com/italomlaino/gobank/application/server"
 	"github.com/italomlaino/gobank/domain"
 	"github.com/italomlaino/gobank/infrastructure/persistence/mysql"
-	"github.com/italomlaino/gobank/infrastructure/server"
 )
 
 func main() {

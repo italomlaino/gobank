@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/italomlaino/gobank/controller"
+	"github.com/italomlaino/gobank/application/controller"
 )
 
 type Server struct {

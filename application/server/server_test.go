@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/italomlaino/gobank/infrastructure/server"
+	"github.com/italomlaino/gobank/application/server"
 	"github.com/italomlaino/gobank/mocks/controller"
 )
 
