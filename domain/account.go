@@ -32,8 +32,7 @@ func (service *DefaultAccountService) Create(documentNumber int64) (*Account, er
 }
 
 func (service *DefaultAccountService) Delete(id int64) error {
-	service.AccountRepository.Delete(id)
-	return nil
+	return service.AccountRepository.Delete(id)
 }
 
 func (service *DefaultAccountService) FetchByDocumentNumber(documentNumber int64) (*Account, error) {
