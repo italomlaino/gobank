@@ -1,4 +1,4 @@
-package server
+package server_test
 
 import (
 	"bytes"
@@ -10,6 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/italomlaino/gobank/infrastructure/server"
+	"github.com/italomlaino/gobank/mocks/controller"
 )
 
 type Mock struct {
@@ -25,32 +28,20 @@ func (m *Mock) CreateAccountHandler() func(c *gin.Context) {
 	return args.Get(0).(func(c *gin.Context))
 }
 
-func (m *Mock) FetchAccountHandler() func(c *gin.Context) {
-	args := m.Called()
-	return args.Get(0).(func(c *gin.Context))
-}
-
-func (m *Mock) CreateTransationHandler() func(c *gin.Context) {
-	args := m.Called()
-	return args.Get(0).(func(c *gin.Context))
-}
-
-func (m *Mock) ListTransationHandler() func(c *gin.Context) {
-	args := m.Called()
-	return args.Get(0).(func(c *gin.Context))
-}
-
 func TestStart(t *testing.T) {
-	mock := new(Mock)
-	mock.On("Handle").Return().Times(4)
-	mock.On("CreateAccountHandler").Return(mock.Handle)
-	mock.On("FetchAccountHandler").Return(mock.Handle)
-	mock.On("CreateTransationHandler").Return(mock.Handle)
-	mock.On("ListTransationHandler").Return(mock.Handle)
+	handler := new(Mock)
+	accountController := new(mocks.AccountController)
+	transactionController := new(mocks.TransactionController)
 
-	server := NewServer("8080", mock, mock)
+	handler.On("Handle").Return().Times(4)
+	accountController.On("CreateAccountHandler").Return(handler.Handle)
+	accountController.On("FetchAccountHandler").Return(handler.Handle)
+	transactionController.On("CreateTransationHandler").Return(handler.Handle)
+	transactionController.On("ListTransationHandler").Return(handler.Handle)
+
+	subject := server.NewServer("8080", accountController, transactionController)
 	go func() {
-		server.Start()
+		subject.Start()
 	}()
 
 	time.Sleep(5 * time.Second)
@@ -73,5 +64,5 @@ func TestStart(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
-	mock.AssertExpectations(t)
+	accountController.AssertExpectations(t)
 }
