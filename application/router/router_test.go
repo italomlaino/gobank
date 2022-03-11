@@ -1,4 +1,4 @@
-package server_test
+package router_test
 
 import (
 	"bytes"
@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/italomlaino/gobank/application/server"
-	"github.com/italomlaino/gobank/mocks/controller"
+	"github.com/italomlaino/gobank/application/router"
+	mocks "github.com/italomlaino/gobank/mocks/controller"
 )
 
 type Mock struct {
@@ -39,7 +39,7 @@ func TestStart(t *testing.T) {
 	transactionController.On("CreateTransationHandler").Return(handler.Handle)
 	transactionController.On("ListTransationHandler").Return(handler.Handle)
 
-	subject := server.NewServer("8080", accountController, transactionController)
+	subject := router.NewRouter("8080", accountController, transactionController)
 	go func() {
 		subject.Start()
 	}()

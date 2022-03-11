@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/italomlaino/gobank/application/controller"
-	"github.com/italomlaino/gobank/application/server"
+	"github.com/italomlaino/gobank/application/router"
 	"github.com/italomlaino/gobank/domain"
 	"github.com/italomlaino/gobank/infrastructure/persistence/mysql"
 )
@@ -19,6 +19,6 @@ func main() {
 	transactionController := controller.NewTransactionController(transactionService)
 
 	port := os.Getenv("PORT")
-	server := server.NewServer(port, accountController, transactionController)
+	server := router.NewRouter(port, accountController, transactionController)
 	server.Start()
 }
