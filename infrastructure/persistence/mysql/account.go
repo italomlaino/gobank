@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/italomlaino/gobank/domain"
@@ -89,7 +88,7 @@ func (repository *MysqlAccountRepository) FetchByDocumentNumber(documentNumber i
 		return &account, nil
 	}
 
-	return nil, fmt.Errorf("could not find an account with document_number := %d", documentNumber)
+	return nil, nil
 }
 
 func (repository *MysqlAccountRepository) FetchByID(id int64) (*domain.Account, error) {
@@ -117,5 +116,5 @@ func (repository *MysqlAccountRepository) FetchByID(id int64) (*domain.Account, 
 		return &account, nil
 	}
 
-	return nil, fmt.Errorf("could not find an account with id := %d", id)
+	return nil, nil
 }

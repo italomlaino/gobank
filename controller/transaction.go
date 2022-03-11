@@ -41,6 +41,11 @@ func (controller *DefaultTransactionController) CreateTransationHandler() func(c
 			return
 		}
 
+		if transaction == nil {
+			c.Status(http.StatusNotFound)
+			return
+		}
+
 		c.JSON(http.StatusOK, transaction)
 	}
 }

@@ -39,7 +39,7 @@ func (controller *DefaultAccountController) CreateAccountHandler() func(c *gin.C
 
 		account, err := controller.AccountService.Create(dto.DocumentNumber)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -57,7 +57,12 @@ func (controller *DefaultAccountController) FetchAccountHandler() func(c *gin.Co
 
 		account, err := controller.AccountService.FetchByID(dto.ID)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if (account == nil) {
+			c.Status(http.StatusNotFound)
 			return
 		}
 
