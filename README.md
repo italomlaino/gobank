@@ -19,6 +19,10 @@ Example of a REST application using the following technologies:
 You need [Docker](https://docs.docker.com/engine/install/) version 20.10.11 or greater and [Docker Compose](https://docs.docker.com/compose/install/) version 1.29.2 or greater.
 
      docker-compose up
+     
+## Endpoints
+
+The list of endpoints are available in the [Postman collection](./documentation/postman/collection.json). 
 
 ## Benchmark
 ![](./documentation/images/benchmark.png)
