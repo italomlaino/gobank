@@ -17,7 +17,7 @@ type GormTransaction struct {
 type GormTransactionRepository struct {
 }
 
-func NewGormTransactionRepository() *GormTransactionRepository {
+func NewTransactionRepository() *GormTransactionRepository {
 	return &GormTransactionRepository{}
 }
 

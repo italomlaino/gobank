@@ -12,7 +12,7 @@ type GormAccount struct {
 type GormAccountRepository struct {
 }
 
-func NewGormAccountRepository() *GormAccountRepository {
+func NewAccountRepository() *GormAccountRepository {
 	return &GormAccountRepository{}
 }
 

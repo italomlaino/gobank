@@ -7,7 +7,7 @@ import (
 type MysqlAccountRepository struct {
 }
 
-func NewMysqlAccountRepository() *MysqlAccountRepository {
+func NewAccountRepository() *MysqlAccountRepository {
 	return &MysqlAccountRepository{}
 }
 

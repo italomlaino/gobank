@@ -9,7 +9,7 @@ import (
 type MysqlTransactionRepository struct {
 }
 
-func NewMysqlTransactionRepository() *MysqlTransactionRepository {
+func NewTransactionRepository() *MysqlTransactionRepository {
 	return &MysqlTransactionRepository{}
 }
 
