@@ -20,4 +20,5 @@ You need [Docker](https://docs.docker.com/engine/install/) version 20.10.11 or g
 
      docker-compose up
 
-## Benchmarks
+## Benchmark
+![](./documentation/images/benchmark.png)
