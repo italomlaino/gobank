@@ -10,6 +10,7 @@ CREATE TABLE accounts
     id              INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     document_number INT UNSIGNED NOT NULL
 );
+CREATE INDEX idx_accounts_document_number ON accounts (document_number);
 
 -- Transaction
 CREATE TABLE transactions
@@ -21,6 +22,7 @@ CREATE TABLE transactions
     event_data        TIMESTAMP    NOT NULL,
     CONSTRAINT fk_transactions_accounts FOREIGN KEY (account_id) REFERENCES accounts (id)
 );
+CREATE INDEX idx_transactions_account_id ON transactions (account_id);
 
 
 COMMIT;
