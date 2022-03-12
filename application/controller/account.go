@@ -61,11 +61,6 @@ func (con *DefaultAccountController) FetchByIDHandler() func(c *gin.Context) {
 			return
 		}
 
-		if account == nil {
-			c.Status(http.StatusNotFound)
-			return
-		}
-
 		c.JSON(http.StatusOK, account)
 	}
 }
