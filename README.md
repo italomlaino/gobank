@@ -4,8 +4,8 @@ Example of a REST application using the following technologies:
 
 - [Go](https://go.dev/) [Language]
 - [Gin Web Framework](https://github.com/gin-gonic/gin) [Router]
-- [GORM](https://github.com/go-gorm/gorm) [ORM]
-- [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) [Driver]
+- [GORM](https://github.com/go-gorm/gorm) [ORM] [__Enabled by default__]
+- [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) [Driver] [__Disabled by default__]
 - [Testify](https://github.com/stretchr/testify) [Testing-toolkit]
 - [Postman](https://www.postman.com/) [API testing tool]
 - [k6](https://k6.io/) [API load testing tool]
