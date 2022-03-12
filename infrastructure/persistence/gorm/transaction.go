@@ -22,10 +22,11 @@ func NewGormTransactionRepository() *GormTransactionRepository {
 }
 
 func (r *GormTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
-	db, err := Open()
+	db, sqlDB, err := Open()
 	if err != nil {
 		return nil, err
 	}
+	defer sqlDB.Close()
 
 	var exists bool
 	err = db.Model(&GormAccount{}).
@@ -56,10 +57,11 @@ func (r *GormTransactionRepository) Create(accountID int64, operationTypeID doma
 }
 
 func (r *GormTransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
-	db, err := Open()
+	db, sqlDB, err := Open()
 	if err != nil {
 		return nil, err
 	}
+	defer sqlDB.Close()
 
 	var entities []GormTransaction
 	result := db.Find(&entities, "account_id = ?", accountID)

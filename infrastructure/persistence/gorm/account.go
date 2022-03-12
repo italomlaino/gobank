@@ -17,10 +17,11 @@ func NewGormAccountRepository() *GormAccountRepository {
 }
 
 func (repository *GormAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
-	db, err := Open()
+	db, sqlDB, err := Open()
 	if err != nil {
 		return nil, err
 	}
+	defer sqlDB.Close()
 
 	entity := GormAccount{
 		DocumentNumber: documentNumber,
@@ -35,10 +36,11 @@ func (repository *GormAccountRepository) Create(documentNumber int64) (*domain.A
 }
 
 func (repository *GormAccountRepository) FetchByID(id int64) (*domain.Account, error) {
-	db, err := Open()
+	db, sqlDB, err := Open()
 	if err != nil {
 		return nil, err
 	}
+	defer sqlDB.Close()
 
 	var entity GormAccount
 	result := db.First(&entity, id)
