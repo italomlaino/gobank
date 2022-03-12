@@ -10,16 +10,10 @@
         "request": "launch",
         "mode": "auto",
         "program": "${workspaceFolder}/cmd/gobank",
-        "environment": [
-          {
-            "name": "PORT", 
-            "value": "8080"
-          },
-          {
-            "name": "DATASOURCE_URL",
-            "value": "admin:admin@tcp(mysql:3306)/gobank?parseTime=true"
-          }
-        ]
+        "env": {
+          "PORT": "8080",
+          "DATASOURCE_URL": "admin:admin@tcp(localhost:3306)/gobank?parseTime=true"
+        }
       }
     ]
   }
