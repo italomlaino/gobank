@@ -2,8 +2,12 @@ package router
 
 import (
 	"log"
+	"reflect"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 
 	"github.com/italomlaino/gobank/application/controller"
 )
@@ -24,6 +28,7 @@ func (r *Router) Start() {
 	log.Printf("Open http://localhost:%s in the browser", r.port)
 
 	router := r.create()
+	r.setupBinding()
 	log.Fatal(router.Run(":" + r.port))
 }
 
@@ -35,4 +40,16 @@ func (r *Router) create() *gin.Engine {
 	router.GET("/accounts/:accountId/transactions", r.TransactionController.FetchByAccountIDHandler())
 	router.POST("/transactions", r.TransactionController.CreateHandler())
 	return router
+}
+
+func (r *Router) setupBinding() {
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+			if name == "-" {
+				return ""
+			}
+			return name
+		})
+	}
 }

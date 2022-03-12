@@ -9,13 +9,13 @@ import (
 )
 
 type CreateTransactionDTO struct {
-	AccountID       int64                `json:"account_id" binding:"required"`
-	OperationTypeID domain.OperationType `json:"operation_type_id" binding:"required"`
-	Amount          int64                `json:"amount" binding:"required"`
+	AccountID       int64                `json:"account_id" binding:"required,number"`
+	OperationTypeID domain.OperationType `json:"operation_type_id" binding:"required,number,min=1,max=4"`
+	Amount          int64                `json:"amount" binding:"required,number"`
 }
 
 type FetchTransactionByAccountIdDTO struct {
-	AccountID int64 `uri:"accountId" binding:"required"`
+	AccountID int64 `uri:"accountId" binding:"required,number"`
 }
 
 type TransactionController interface {
@@ -35,7 +35,7 @@ func (con *DefaultTransactionController) CreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateTransactionDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.Error(err)
 			return
 		}
 
@@ -53,13 +53,13 @@ func (con *DefaultTransactionController) FetchByAccountIDHandler() func(c *gin.C
 	return func(c *gin.Context) {
 		var dto FetchTransactionByAccountIdDTO
 		if err := c.ShouldBindUri(&dto); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.Error(err)
 			return
 		}
 
 		accounts, err := con.TransactionService.FetchByAccountID(dto.AccountID)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.Error(err)
 			return
 		}
 
