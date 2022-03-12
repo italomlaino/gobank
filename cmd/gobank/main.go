@@ -6,19 +6,19 @@ import (
 	"github.com/italomlaino/gobank/application/controller"
 	"github.com/italomlaino/gobank/application/router"
 	"github.com/italomlaino/gobank/domain"
-	"github.com/italomlaino/gobank/infrastructure/persistence/mysql"
+	"github.com/italomlaino/gobank/infrastructure/persistence/gorm"
 )
 
 func main() {
-	accountRepository := mysql.NewMysqlAccountRepository()
+	accountRepository := gorm.NewGormAccountRepository()
 	accountService := domain.NewAccountService(accountRepository)
 	accountController := controller.NewAccountController(accountService)
 
-	transactionRepository := mysql.NewMysqlTransactionRepository()
+	transactionRepository := gorm.NewGormTransactionRepository()
 	transactionService := domain.NewTransactionService(transactionRepository)
 	transactionController := controller.NewTransactionController(transactionService)
 
 	port := os.Getenv("PORT")
-	server := router.NewRouter(port, accountController, transactionController)
-	server.Start()
+	router := router.NewRouter(port, accountController, transactionController)
+	router.Start()
 }
