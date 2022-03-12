@@ -37,13 +37,13 @@ func (_m *TransactionRepository) Create(accountID int64, operationTypeID domain.
 	return r0, r1
 }
 
-// FetchAll provides a mock function with given fields:
-func (_m *TransactionRepository) FetchAll() (*[]domain.Transaction, error) {
-	ret := _m.Called()
+// FetchByAccountID provides a mock function with given fields: accountID
+func (_m *TransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
+	ret := _m.Called(accountID)
 
 	var r0 *[]domain.Transaction
-	if rf, ok := ret.Get(0).(func() *[]domain.Transaction); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(int64) *[]domain.Transaction); ok {
+		r0 = rf(accountID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*[]domain.Transaction)
@@ -51,8 +51,8 @@ func (_m *TransactionRepository) FetchAll() (*[]domain.Transaction, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(int64) error); ok {
+		r1 = rf(accountID)
 	} else {
 		r1 = ret.Error(1)
 	}
