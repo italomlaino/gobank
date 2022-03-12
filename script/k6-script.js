@@ -26,15 +26,15 @@ export function setup() {
       'status is 200': (r) => r.status === 200,
     });
     console.log(`Account Creation Response body: ${res.body}`);
-
+    
     return { accountId: JSON.parse(res.body).id }
-}
-
-export default function(data) {
-  const reqBody = createTransactionBody(data.accountId);
-  const reqBodyString = JSON.stringify(reqBody);
-  console.log(`Transaction Creation Request body: ${reqBodyString}`);
-  const res = http.post(`${host}/transactions`, reqBodyString, appJsonHeaders);
+  }
+  
+  export default function(data) {
+    const reqBody = createTransactionBody(data.accountId);
+    const reqBodyString = JSON.stringify(reqBody);
+    console.log(`Transaction Creation Request body: ${reqBodyString}`);
+    const res = http.post(`${host}/transactions`, reqBodyString, appJsonHeaders);
 
   check(res, {
     'status is 200': (r) => r.status === 200,
@@ -42,4 +42,6 @@ export default function(data) {
     'has correct operation type id': (r) => r.json().operation_type_id === reqBody.operation_type_id,
     'has correct amount': (r) => r.json().amount === reqBody.amount,
   });
+
+  console.log(`Transaction Creation Response body: ${res.body}`);
 }
