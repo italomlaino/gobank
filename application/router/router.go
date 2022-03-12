@@ -32,7 +32,7 @@ func (r *Router) create() *gin.Engine {
 	router.Use(ErrorMiddleware())
 	router.POST("/accounts", r.AccountController.CreateHandler())
 	router.GET("/accounts/:accountId", r.AccountController.FetchByIDHandler())
+	router.GET("/accounts/:accountId/transactions", r.TransactionController.FetchByAccountIDHandler())
 	router.POST("/transactions", r.TransactionController.CreateHandler())
-	router.GET("/transactions/:accountId", r.TransactionController.FetchByAccountIDHandler())
 	return router
 }
