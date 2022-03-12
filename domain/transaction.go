@@ -19,19 +19,3 @@ type TransactionService interface {
 	Create(accountID int64, operationTypeID int64, amount int64) (*Transaction, error)
 	FetchByAccountID(accountID int64) (*[]Transaction, error)
 }
-
-type DefaultTransactionService struct {
-	TransactionRepository
-}
-
-func NewTransactionService(repository TransactionRepository) *DefaultTransactionService {
-	return &DefaultTransactionService{repository}
-}
-
-func (s *DefaultTransactionService) Create(accountID int64, operationTypeID int64, amount int64) (*Transaction, error) {
-	return s.TransactionRepository.Create(accountID, operationTypeID, amount, time.Now())
-}
-
-func (s *DefaultTransactionService) FetchByAccountID(accountID int64) (*[]Transaction, error) {
-	return s.TransactionRepository.FetchByAccountID(accountID)
-}
