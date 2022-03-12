@@ -24,4 +24,5 @@ You need [Docker](https://docs.docker.com/engine/install/) version 20.10.11 or g
 The list of endpoints are available in the [Postman collection](./documentation/postman/collection.json). 
 
 ## Benchmark
+    k6 run --vus 10 --duration 60s script/k6-script.js 
 ![](./documentation/images/benchmark.png)
