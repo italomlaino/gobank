@@ -1,8 +1,6 @@
 package mysql
 
 import (
-	"log"
-
 	"github.com/italomlaino/gobank/domain"
 )
 
@@ -17,7 +15,7 @@ func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.
 	db := Connect()
 	defer db.Close()
 
-	statement, err := db.Prepare("INSERT INTO account(document_number) VALUES (?)")
+	statement, err := db.Prepare("INSERT INTO accounts(document_number) VALUES (?)")
 	if err != nil {
 		return nil, err
 	}
@@ -38,64 +36,11 @@ func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.
 	}, nil
 }
 
-func (repository *MysqlAccountRepository) Delete(id int64) error {
-	db := Connect()
-	defer db.Close()
-
-	statement, err := db.Prepare("DELETE FROM account WHERE id = ?")
-	if err != nil {
-		return err
-	}
-
-	result, err := statement.Exec(id)
-	if err != nil {
-		return err
-	}
-
-	affectedRows, err := result.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	log.Printf("the statement affected %d rows", affectedRows)
-
-	return nil
-}
-
-func (repository *MysqlAccountRepository) FetchByDocumentNumber(documentNumber int64) (*domain.Account, error) {
-	db := Connect()
-	defer db.Close()
-
-	statement, err := db.Query("SELECT * FROM account WHERE document_number = ?", documentNumber)
-	if err != nil {
-		return nil, err
-	}
-
-	if statement.Next() {
-		var id int64
-		var documentNumber int64
-
-		err = statement.Scan(&id, &documentNumber)
-		if err != nil {
-			return nil, err
-		}
-
-		account := domain.Account{
-			ID:             id,
-			DocumentNumber: documentNumber,
-		}
-
-		return &account, nil
-	}
-
-	return nil, nil
-}
-
 func (repository *MysqlAccountRepository) FetchByID(id int64) (*domain.Account, error) {
 	db := Connect()
 	defer db.Close()
 
-	statement, err := db.Query("SELECT * FROM account WHERE id = ?", id)
+	statement, err := db.Query("SELECT * FROM accounts WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}

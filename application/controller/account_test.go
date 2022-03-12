@@ -14,7 +14,7 @@ import (
 
 	"github.com/italomlaino/gobank/application/controller"
 	"github.com/italomlaino/gobank/domain"
- 	"github.com/italomlaino/gobank/mocks/domain"
+	mocks "github.com/italomlaino/gobank/mocks/domain"
 )
 
 func TestCreateAccountHandler(t *testing.T) {
@@ -24,7 +24,7 @@ func TestCreateAccountHandler(t *testing.T) {
 	mock.On("Create", int64(12345678)).Return(account, nil)
 
 	subject := controller.NewAccountController(mock)
-	handler := subject.CreateAccountHandler()
+	handler := subject.CreateHandler()
 
 	expectedBody, _ := json.Marshal(account)
 
@@ -40,7 +40,7 @@ func TestCreateAccountHandler(t *testing.T) {
 	assert.Equal(string(expectedBody), string(actualBody))
 }
 
-func TestFetchAccountHandler(t *testing.T) {
+func TestFetchByIDHandler(t *testing.T) {
 	account := &domain.Account{
 		ID:             1,
 		DocumentNumber: 12345678,
@@ -50,7 +50,7 @@ func TestFetchAccountHandler(t *testing.T) {
 	mock.On("FetchByID", account.ID).Return(account, nil)
 
 	subject := controller.NewAccountController(mock)
-	handler := subject.FetchAccountHandler()
+	handler := subject.FetchByIDHandler()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)

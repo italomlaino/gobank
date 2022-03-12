@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/mock"
 
 	"github.com/italomlaino/gobank/application/router"
-	mocks "github.com/italomlaino/gobank/mocks/controller"
+	mocks "github.com/italomlaino/gobank/mocks/application/controller"
 )
 
 type Mock struct {
@@ -23,7 +23,7 @@ func (m *Mock) Handle(c *gin.Context) {
 	m.Called()
 }
 
-func (m *Mock) CreateAccountHandler() func(c *gin.Context) {
+func (m *Mock) CreateHandler() func(c *gin.Context) {
 	args := m.Called()
 	return args.Get(0).(func(c *gin.Context))
 }
@@ -34,10 +34,10 @@ func TestStart(t *testing.T) {
 	transactionController := new(mocks.TransactionController)
 
 	handler.On("Handle").Return().Times(4)
-	accountController.On("CreateAccountHandler").Return(handler.Handle)
-	accountController.On("FetchAccountHandler").Return(handler.Handle)
-	transactionController.On("CreateTransationHandler").Return(handler.Handle)
-	transactionController.On("ListTransationHandler").Return(handler.Handle)
+	accountController.On("CreateHandler").Return(handler.Handle)
+	accountController.On("FetchByIDHandler").Return(handler.Handle)
+	transactionController.On("CreateHandler").Return(handler.Handle)
+	transactionController.On("FetchByAccountIDHandler").Return(handler.Handle)
 
 	subject := router.NewRouter("8080", accountController, transactionController)
 	go func() {
@@ -60,7 +60,7 @@ func TestStart(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
-	resp, err = http.Get("http://localhost:8080/transactions")
+	resp, err = http.Get("http://localhost:8080/transactions/1")
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 

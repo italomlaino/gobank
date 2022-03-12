@@ -8,26 +8,30 @@ import (
 	"github.com/italomlaino/gobank/domain"
 )
 
-type TransactionController interface {
-	CreateTransationHandler() func(c *gin.Context)
-	ListTransationHandler() func(c *gin.Context)
-}
-
-type DefaultTransactionController struct {
-	domain.TransactionService
-}
-
 type CreateTransactionDTO struct {
 	AccountID       int64                `json:"account_id" binding:"required"`
 	OperationTypeID domain.OperationType `json:"operation_type_id" binding:"required"`
 	Amount          int64                `json:"amount" binding:"required"`
 }
 
+type FetchTransactionByAccountIdDTO struct {
+	AccountID int64 `uri:"accountId" binding:"required"`
+}
+
+type TransactionController interface {
+	CreateHandler() func(c *gin.Context)
+	FetchByAccountIDHandler() func(c *gin.Context)
+}
+
+type DefaultTransactionController struct {
+	domain.TransactionService
+}
+
 func NewTransactionController(service domain.TransactionService) *DefaultTransactionController {
 	return &DefaultTransactionController{service}
 }
 
-func (controller *DefaultTransactionController) CreateTransationHandler() func(c *gin.Context) {
+func (controller *DefaultTransactionController) CreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateTransactionDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -37,12 +41,7 @@ func (controller *DefaultTransactionController) CreateTransationHandler() func(c
 
 		transaction, err := controller.TransactionService.Create(dto.AccountID, dto.OperationTypeID, dto.Amount)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		if transaction == nil {
-			c.Status(http.StatusNotFound)
+			c.Error(err)
 			return
 		}
 
@@ -50,9 +49,15 @@ func (controller *DefaultTransactionController) CreateTransationHandler() func(c
 	}
 }
 
-func (controller *DefaultTransactionController) ListTransationHandler() func(c *gin.Context) {
+func (controller *DefaultTransactionController) FetchByAccountIDHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		accounts, err := controller.TransactionService.FetchAll()
+		var dto FetchTransactionByAccountIdDTO
+		if err := c.ShouldBindUri(&dto); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		accounts, err := controller.TransactionService.FetchByAccountID(dto.AccountID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return

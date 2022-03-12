@@ -7,15 +7,11 @@ type Account struct {
 
 type AccountRepository interface {
 	Create(documentNumber int64) (*Account, error)
-	Delete(id int64) error
-	FetchByDocumentNumber(documentNumber int64) (*Account, error)
 	FetchByID(id int64) (*Account, error)
 }
 
 type AccountService interface {
 	Create(documentNumber int64) (*Account, error)
-	Delete(id int64) error
-	FetchByDocumentNumber(documentNumber int64) (*Account, error)
 	FetchByID(id int64) (*Account, error)
 }
 
@@ -29,14 +25,6 @@ func NewAccountService(repository AccountRepository) *DefaultAccountService {
 
 func (service *DefaultAccountService) Create(documentNumber int64) (*Account, error) {
 	return service.AccountRepository.Create(documentNumber)
-}
-
-func (service *DefaultAccountService) Delete(id int64) error {
-	return service.AccountRepository.Delete(id)
-}
-
-func (service *DefaultAccountService) FetchByDocumentNumber(documentNumber int64) (*Account, error) {
-	return service.AccountRepository.FetchByDocumentNumber(documentNumber)
 }
 
 func (service *DefaultAccountService) FetchByID(id int64) (*Account, error) {

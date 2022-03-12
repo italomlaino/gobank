@@ -17,7 +17,7 @@ func (repository *MysqlTransactionRepository) Create(accountID int64, operationT
 	db := Connect()
 	defer db.Close()
 
-	statement, err := db.Prepare("INSERT INTO account_transaction(account_id, operation_type_id, amount, event_data) VALUES (?,?,?,?)")
+	statement, err := db.Prepare("INSERT INTO transactions(account_id, operation_type_id, amount, event_data) VALUES (?,?,?,?)")
 	if err != nil {
 		return nil, err
 	}
@@ -41,11 +41,11 @@ func (repository *MysqlTransactionRepository) Create(accountID int64, operationT
 	}, nil
 }
 
-func (repository *MysqlTransactionRepository) FetchAll() (*[]domain.Transaction, error) {
+func (repository *MysqlTransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
 	db := Connect()
 	defer db.Close()
 
-	statement, err := db.Query("SELECT * FROM account_transaction")
+	statement, err := db.Query("SELECT * FROM transactions WHERE account_id = ?", accountID)
 	if err != nil {
 		return nil, err
 	}

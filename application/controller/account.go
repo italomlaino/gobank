@@ -17,8 +17,8 @@ type FetchAccountByIdDTO struct {
 }
 
 type AccountController interface {
-	CreateAccountHandler() func(c *gin.Context)
-	FetchAccountHandler() func(c *gin.Context)
+	CreateHandler() func(c *gin.Context)
+	FetchByIDHandler() func(c *gin.Context)
 }
 
 type DefaultAccountController struct {
@@ -29,7 +29,7 @@ func NewAccountController(service domain.AccountService) *DefaultAccountControll
 	return &DefaultAccountController{service}
 }
 
-func (controller *DefaultAccountController) CreateAccountHandler() func(c *gin.Context) {
+func (controller *DefaultAccountController) CreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateAccountDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -47,7 +47,7 @@ func (controller *DefaultAccountController) CreateAccountHandler() func(c *gin.C
 	}
 }
 
-func (controller *DefaultAccountController) FetchAccountHandler() func(c *gin.Context) {
+func (controller *DefaultAccountController) FetchByIDHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto FetchAccountByIdDTO
 		if err := c.ShouldBindUri(&dto); err != nil {
@@ -61,7 +61,7 @@ func (controller *DefaultAccountController) FetchAccountHandler() func(c *gin.Co
 			return
 		}
 
-		if (account == nil) {
+		if account == nil {
 			c.Status(http.StatusNotFound)
 			return
 		}

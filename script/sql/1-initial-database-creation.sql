@@ -5,21 +5,21 @@ CREATE DATABASE IF NOT EXISTS gobank;
 USE gobank;
 
 -- Account
-CREATE TABLE account
+CREATE TABLE accounts
 (
     id              INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     document_number INT UNSIGNED NOT NULL
 );
 
 -- Transaction
-CREATE TABLE account_transaction
+CREATE TABLE transactions
 (
     id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     account_id        INT UNSIGNED NOT NULL,
     operation_type_id INT UNSIGNED NOT NULL,
     amount            INT          NOT NULL,
     event_data        TIMESTAMP    NOT NULL,
-    CONSTRAINT fk_account_transaction_account FOREIGN KEY (account_id) REFERENCES account (id)
+    CONSTRAINT fk_transactions_accounts FOREIGN KEY (account_id) REFERENCES accounts (id)
 );
 
 

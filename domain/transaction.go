@@ -21,12 +21,12 @@ type Transaction struct {
 
 type TransactionRepository interface {
 	Create(accountID int64, operationTypeID OperationType, amount int64, eventData time.Time) (*Transaction, error)
-	FetchAll() (*[]Transaction, error)
+	FetchByAccountID(accountID int64) (*[]Transaction, error)
 }
 
 type TransactionService interface {
 	Create(accountID int64, operationTypeID OperationType, amount int64) (*Transaction, error)
-	FetchAll() (*[]Transaction, error)
+	FetchByAccountID(accountID int64) (*[]Transaction, error)
 }
 
 type DefaultTransactionService struct {
@@ -41,6 +41,6 @@ func (service *DefaultTransactionService) Create(accountID int64, operationTypeI
 	return service.TransactionRepository.Create(accountID, operationTypeID, amount, time.Now())
 }
 
-func (service *DefaultTransactionService) FetchAll() (*[]Transaction, error) {
-	return service.TransactionRepository.FetchAll()
+func (service *DefaultTransactionService) FetchByAccountID(accountID int64) (*[]Transaction, error) {
+	return service.TransactionRepository.FetchByAccountID(accountID)
 }
