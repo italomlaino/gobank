@@ -6,7 +6,7 @@ import (
 	"github.com/italomlaino/gobank/domain"
 )
 
-type GormTransaction struct {
+type Transaction struct {
 	ID              int64                `gorm:"column:id;primaryKey"`
 	AccountID       int64                `gorm:"column:account_id"`
 	OperationTypeID domain.OperationType `gorm:"column:operation_type_id"`
@@ -14,16 +14,16 @@ type GormTransaction struct {
 	EventData       time.Time            `gorm:"column:event_data"`
 }
 
-type GormTransactionRepository struct {
+type TransactionRepository struct {
 }
 
-func NewTransactionRepository() *GormTransactionRepository {
-	return &GormTransactionRepository{}
+func NewTransactionRepository() *TransactionRepository {
+	return &TransactionRepository{}
 }
 
-func (r *GormTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
+func (r *TransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
 	var exists bool
-	err := DB.Model(&GormAccount{}).
+	err := DB.Model(&Account{}).
 		Select("count(*) > 0").
 		Where("id = ?", accountID).
 		Find(&exists).
@@ -35,7 +35,7 @@ func (r *GormTransactionRepository) Create(accountID int64, operationTypeID doma
 		return nil, domain.ErrAccountNotFound
 	}
 
-	entity := GormTransaction{
+	entity := Transaction{
 		AccountID:       accountID,
 		OperationTypeID: operationTypeID,
 		Amount:          amount,
@@ -50,8 +50,8 @@ func (r *GormTransactionRepository) Create(accountID int64, operationTypeID doma
 	return &transaction, nil
 }
 
-func (r *GormTransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
-	var entities []GormTransaction
+func (r *TransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
+	var entities []Transaction
 	result := DB.Find(&entities, "account_id = ?", accountID)
 	if result.Error != nil {
 		return nil, result.Error

@@ -6,14 +6,14 @@ import (
 	"github.com/italomlaino/gobank/domain"
 )
 
-type MysqlTransactionRepository struct {
+type TransactionRepository struct {
 }
 
-func NewTransactionRepository() *MysqlTransactionRepository {
-	return &MysqlTransactionRepository{}
+func NewTransactionRepository() *TransactionRepository {
+	return &TransactionRepository{}
 }
 
-func (repository *MysqlTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
+func (r *TransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
 	statement, err := DB.Prepare("INSERT INTO transactions(account_id, operation_type_id, amount, event_data) VALUES (?,?,?,?)")
 	if err != nil {
 		return nil, err
@@ -38,13 +38,13 @@ func (repository *MysqlTransactionRepository) Create(accountID int64, operationT
 	}, nil
 }
 
-func (repository *MysqlTransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
+func (r *TransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
 	statement, err := DB.Query("SELECT * FROM transactions WHERE account_id = ?", accountID)
 	if err != nil {
 		return nil, err
 	}
 
-	results := []domain.Transaction{}
+	var results []domain.Transaction
 	for statement.Next() {
 		var id int64
 		var accountID int64

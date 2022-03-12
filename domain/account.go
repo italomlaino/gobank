@@ -23,10 +23,10 @@ func NewAccountService(repository AccountRepository) *DefaultAccountService {
 	return &DefaultAccountService{repository}
 }
 
-func (service *DefaultAccountService) Create(documentNumber int64) (*Account, error) {
-	return service.AccountRepository.Create(documentNumber)
+func (s *DefaultAccountService) Create(documentNumber int64) (*Account, error) {
+	return s.AccountRepository.Create(documentNumber)
 }
 
-func (service *DefaultAccountService) FetchByID(id int64) (*Account, error) {
-	return service.AccountRepository.FetchByID(id)
+func (s *DefaultAccountService) FetchByID(id int64) (*Account, error) {
+	return s.AccountRepository.FetchByID(id)
 }

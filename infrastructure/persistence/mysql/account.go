@@ -4,14 +4,14 @@ import (
 	"github.com/italomlaino/gobank/domain"
 )
 
-type MysqlAccountRepository struct {
+type AccountRepository struct {
 }
 
-func NewAccountRepository() *MysqlAccountRepository {
-	return &MysqlAccountRepository{}
+func NewAccountRepository() *AccountRepository {
+	return &AccountRepository{}
 }
 
-func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
+func (r *AccountRepository) Create(documentNumber int64) (*domain.Account, error) {
 	statement, err := DB.Prepare("INSERT INTO accounts(document_number) VALUES (?)")
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.
 	}, nil
 }
 
-func (repository *MysqlAccountRepository) FetchByID(id int64) (*domain.Account, error) {
+func (r *AccountRepository) FetchByID(id int64) (*domain.Account, error) {
 	statement, err := DB.Query("SELECT * FROM accounts WHERE id = ?", id)
 	if err != nil {
 		return nil, err

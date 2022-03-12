@@ -29,7 +29,7 @@ func NewAccountController(service domain.AccountService) *DefaultAccountControll
 	return &DefaultAccountController{service}
 }
 
-func (controller *DefaultAccountController) CreateHandler() func(c *gin.Context) {
+func (con *DefaultAccountController) CreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateAccountDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -37,7 +37,7 @@ func (controller *DefaultAccountController) CreateHandler() func(c *gin.Context)
 			return
 		}
 
-		account, err := controller.AccountService.Create(dto.DocumentNumber)
+		account, err := con.AccountService.Create(dto.DocumentNumber)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -47,7 +47,7 @@ func (controller *DefaultAccountController) CreateHandler() func(c *gin.Context)
 	}
 }
 
-func (controller *DefaultAccountController) FetchByIDHandler() func(c *gin.Context) {
+func (con *DefaultAccountController) FetchByIDHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto FetchAccountByIdDTO
 		if err := c.ShouldBindUri(&dto); err != nil {
@@ -55,7 +55,7 @@ func (controller *DefaultAccountController) FetchByIDHandler() func(c *gin.Conte
 			return
 		}
 
-		account, err := controller.AccountService.FetchByID(dto.ID)
+		account, err := con.AccountService.FetchByID(dto.ID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

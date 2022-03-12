@@ -4,20 +4,20 @@ import (
 	"github.com/italomlaino/gobank/domain"
 )
 
-type GormAccount struct {
+type Account struct {
 	ID             int64 `gorm:"column:id;primaryKey"`
 	DocumentNumber int64 `gorm:"column:document_number"`
 }
 
-type GormAccountRepository struct {
+type AccountRepository struct {
 }
 
-func NewAccountRepository() *GormAccountRepository {
-	return &GormAccountRepository{}
+func NewAccountRepository() *AccountRepository {
+	return &AccountRepository{}
 }
 
-func (repository *GormAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
-	entity := GormAccount{
+func (r *AccountRepository) Create(documentNumber int64) (*domain.Account, error) {
+	entity := Account{
 		DocumentNumber: documentNumber,
 	}
 	result := DB.Create(&entity)
@@ -29,8 +29,8 @@ func (repository *GormAccountRepository) Create(documentNumber int64) (*domain.A
 	return &transaction, nil
 }
 
-func (repository *GormAccountRepository) FetchByID(id int64) (*domain.Account, error) {
-	var entity GormAccount
+func (r *AccountRepository) FetchByID(id int64) (*domain.Account, error) {
+	var entity Account
 	result := DB.First(&entity, id)
 	if result.Error != nil {
 		return nil, result.Error

@@ -37,10 +37,10 @@ func NewTransactionService(repository TransactionRepository) *DefaultTransaction
 	return &DefaultTransactionService{repository}
 }
 
-func (service *DefaultTransactionService) Create(accountID int64, operationTypeID OperationType, amount int64) (*Transaction, error) {
-	return service.TransactionRepository.Create(accountID, operationTypeID, amount, time.Now())
+func (s *DefaultTransactionService) Create(accountID int64, operationTypeID OperationType, amount int64) (*Transaction, error) {
+	return s.TransactionRepository.Create(accountID, operationTypeID, amount, time.Now())
 }
 
-func (service *DefaultTransactionService) FetchByAccountID(accountID int64) (*[]Transaction, error) {
-	return service.TransactionRepository.FetchByAccountID(accountID)
+func (s *DefaultTransactionService) FetchByAccountID(accountID int64) (*[]Transaction, error) {
+	return s.TransactionRepository.FetchByAccountID(accountID)
 }

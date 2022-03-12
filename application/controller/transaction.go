@@ -31,7 +31,7 @@ func NewTransactionController(service domain.TransactionService) *DefaultTransac
 	return &DefaultTransactionController{service}
 }
 
-func (controller *DefaultTransactionController) CreateHandler() func(c *gin.Context) {
+func (con *DefaultTransactionController) CreateHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto CreateTransactionDTO
 		if err := c.ShouldBindJSON(&dto); err != nil {
@@ -39,7 +39,7 @@ func (controller *DefaultTransactionController) CreateHandler() func(c *gin.Cont
 			return
 		}
 
-		transaction, err := controller.TransactionService.Create(dto.AccountID, dto.OperationTypeID, dto.Amount)
+		transaction, err := con.TransactionService.Create(dto.AccountID, dto.OperationTypeID, dto.Amount)
 		if err != nil {
 			c.Error(err)
 			return
@@ -49,7 +49,7 @@ func (controller *DefaultTransactionController) CreateHandler() func(c *gin.Cont
 	}
 }
 
-func (controller *DefaultTransactionController) FetchByAccountIDHandler() func(c *gin.Context) {
+func (con *DefaultTransactionController) FetchByAccountIDHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var dto FetchTransactionByAccountIdDTO
 		if err := c.ShouldBindUri(&dto); err != nil {
@@ -57,7 +57,7 @@ func (controller *DefaultTransactionController) FetchByAccountIDHandler() func(c
 			return
 		}
 
-		accounts, err := controller.TransactionService.FetchByAccountID(dto.AccountID)
+		accounts, err := con.TransactionService.FetchByAccountID(dto.AccountID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
