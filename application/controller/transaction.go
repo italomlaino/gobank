@@ -9,9 +9,9 @@ import (
 )
 
 type CreateTransactionDTO struct {
-	AccountID       int64                `json:"account_id" binding:"required,number,min=1"`
-	OperationTypeID domain.OperationType `json:"operation_type_id" binding:"required,number,min=1,max=4"`
-	Amount          int64                `json:"amount" binding:"required,number,min=1"`
+	AccountID       int64 `json:"account_id" binding:"required,number,min=1"`
+	OperationTypeID int64 `json:"operation_type_id" binding:"required,number,min=1"`
+	Amount          int64 `json:"amount" binding:"required,number,min=1"`
 }
 
 type FetchTransactionByAccountIdDTO struct {

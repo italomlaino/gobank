@@ -10,11 +10,11 @@ import (
 )
 
 type Transaction struct {
-	ID              int64                `gorm:"column:id;primaryKey"`
-	AccountID       int64                `gorm:"column:account_id"`
-	OperationTypeID domain.OperationType `gorm:"column:operation_type_id"`
-	Amount          int64                `gorm:"column:amount"`
-	EventData       time.Time            `gorm:"column:event_data"`
+	ID              int64     `gorm:"column:id;primaryKey"`
+	AccountID       int64     `gorm:"column:account_id"`
+	OperationTypeID int64     `gorm:"column:operation_type_id"`
+	Amount          int64     `gorm:"column:amount"`
+	EventData       time.Time `gorm:"column:event_data"`
 }
 
 type TransactionRepository struct {
@@ -24,18 +24,31 @@ func NewTransactionRepository() *TransactionRepository {
 	return &TransactionRepository{}
 }
 
-func (r *TransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
-	var exists bool
+func (r *TransactionRepository) Create(accountID int64, operationTypeID int64, amount int64, eventData time.Time) (*domain.Transaction, error) {
+	var accountExists bool
 	err := DB.Model(&Account{}).
 		Select("count(*) > 0").
 		Where("id = ?", accountID).
-		Find(&exists).
+		Find(&accountExists).
 		Error
 	if err != nil {
 		return nil, err
 	}
-	if !exists {
+	if !accountExists {
 		return nil, domain.ErrorAccountNotFound
+	}
+
+	var operationTypeExists bool
+	err = DB.Model(&OperationType{}).
+		Select("count(*) > 0").
+		Where("id = ?", operationTypeID).
+		Find(&operationTypeExists).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	if !operationTypeExists {
+		return nil, domain.ErrorOperationTypeNotFound
 	}
 
 	entity := Transaction{

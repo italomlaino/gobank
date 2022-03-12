@@ -15,11 +15,11 @@ type TransactionRepository struct {
 }
 
 // Create provides a mock function with given fields: accountID, operationTypeID, amount, eventData
-func (_m *TransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
+func (_m *TransactionRepository) Create(accountID int64, operationTypeID int64, amount int64, eventData time.Time) (*domain.Transaction, error) {
 	ret := _m.Called(accountID, operationTypeID, amount, eventData)
 
 	var r0 *domain.Transaction
-	if rf, ok := ret.Get(0).(func(int64, domain.OperationType, int64, time.Time) *domain.Transaction); ok {
+	if rf, ok := ret.Get(0).(func(int64, int64, int64, time.Time) *domain.Transaction); ok {
 		r0 = rf(accountID, operationTypeID, amount, eventData)
 	} else {
 		if ret.Get(0) != nil {
@@ -28,7 +28,7 @@ func (_m *TransactionRepository) Create(accountID int64, operationTypeID domain.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(int64, domain.OperationType, int64, time.Time) error); ok {
+	if rf, ok := ret.Get(1).(func(int64, int64, int64, time.Time) error); ok {
 		r1 = rf(accountID, operationTypeID, amount, eventData)
 	} else {
 		r1 = ret.Error(1)

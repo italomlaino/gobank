@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	ErrorAccountNotFound     = NewError("account not found", http.StatusNotFound, nil)
-	ErrorTransactionNotFound = NewError("transaction not found", http.StatusNotFound, nil)
+	ErrorAccountNotFound       = NewError("account not found", http.StatusNotFound, nil)
+	ErrorTransactionNotFound   = NewError("transaction not found", http.StatusNotFound, nil)
+	ErrorOperationTypeNotFound = NewError("operation type not found", http.StatusNotFound, nil)
 )
 
 func NewError(message string, code int, errors []error) error {
