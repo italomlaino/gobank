@@ -10,11 +10,11 @@ import (
 )
 
 type Transaction struct {
-	ID              int64     `gorm:"column:id;primaryKey"`
-	AccountID       int64     `gorm:"column:account_id"`
-	OperationTypeID int64     `gorm:"column:operation_type_id"`
-	Amount          int64     `gorm:"column:amount"`
-	EventData       time.Time `gorm:"column:event_data"`
+	ID              int64                  `gorm:"column:id;primaryKey"`
+	AccountID       int64                  `gorm:"column:account_id"`
+	OperationTypeID domain.OperationTypeID `gorm:"column:operation_type_id"`
+	Amount          int64                  `gorm:"column:amount"`
+	EventData       time.Time              `gorm:"column:event_data"`
 }
 
 type TransactionRepository struct {
@@ -24,7 +24,7 @@ func NewTransactionRepository() *TransactionRepository {
 	return &TransactionRepository{}
 }
 
-func (r *TransactionRepository) Create(accountID int64, operationTypeID int64, amount int64, eventData time.Time) (*domain.Transaction, error) {
+func (r *TransactionRepository) Create(accountID int64, operationTypeID domain.OperationTypeID, amount int64, eventData time.Time) (*domain.Transaction, error) {
 	var accountExists bool
 	err := DB.Model(&Account{}).
 		Select("count(*) > 0").

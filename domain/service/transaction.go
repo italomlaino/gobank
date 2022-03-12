@@ -14,7 +14,12 @@ func NewTransactionService(repository domain.TransactionRepository) *Transaction
 	return &TransactionService{repository}
 }
 
-func (s *TransactionService) Create(accountID int64, operationTypeID int64, amount int64) (*domain.Transaction, error) {
+func (s *TransactionService) Create(accountID int64, operationTypeID domain.OperationTypeID, amount int64) (*domain.Transaction, error) {
+	err := operationTypeID.Validate(amount)
+	if err != nil {
+		return nil, err
+	}
+
 	return s.TransactionRepository.Create(accountID, operationTypeID, amount, time.Now())
 }
 

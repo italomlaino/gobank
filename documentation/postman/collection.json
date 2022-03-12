@@ -152,7 +152,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"account_id\": 1,\n    \"operation_type_id\": 1,\n    \"amount\": 10000\n}",
+					"raw": "{\n    \"account_id\": 1,\n    \"operation_type_id\": 1,\n    \"amount\": -10000\n}",
 					"options": {
 						"raw": {
 							"language": "json"

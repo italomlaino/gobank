@@ -13,11 +13,11 @@ type TransactionService struct {
 }
 
 // Create provides a mock function with given fields: accountID, operationTypeID, amount
-func (_m *TransactionService) Create(accountID int64, operationTypeID int64, amount int64) (*domain.Transaction, error) {
+func (_m *TransactionService) Create(accountID int64, operationTypeID domain.OperationTypeID, amount int64) (*domain.Transaction, error) {
 	ret := _m.Called(accountID, operationTypeID, amount)
 
 	var r0 *domain.Transaction
-	if rf, ok := ret.Get(0).(func(int64, int64, int64) *domain.Transaction); ok {
+	if rf, ok := ret.Get(0).(func(int64, domain.OperationTypeID, int64) *domain.Transaction); ok {
 		r0 = rf(accountID, operationTypeID, amount)
 	} else {
 		if ret.Get(0) != nil {
@@ -26,7 +26,7 @@ func (_m *TransactionService) Create(accountID int64, operationTypeID int64, amo
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(int64, int64, int64) error); ok {
+	if rf, ok := ret.Get(1).(func(int64, domain.OperationTypeID, int64) error); ok {
 		r1 = rf(accountID, operationTypeID, amount)
 	} else {
 		r1 = ret.Error(1)

@@ -13,7 +13,7 @@ const createAccountBody = (documentNumber) => ({
 const createTransactionBody = (accountId) => ({
     'account_id': accountId,
     'operation_type_id': 1,
-    'amount': 100000
+    'amount': -100000
 })
 
 const appJsonHeaders = { headers: { 'Content-Type': 'application/json' }};

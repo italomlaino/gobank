@@ -7,9 +7,11 @@ import (
 )
 
 var (
-	ErrorAccountNotFound       = NewError("account not found", http.StatusNotFound, nil)
-	ErrorTransactionNotFound   = NewError("transaction not found", http.StatusNotFound, nil)
-	ErrorOperationTypeNotFound = NewError("operation type not found", http.StatusNotFound, nil)
+	ErrorAccountNotFound                          = NewError("Account not found", http.StatusNotFound, nil)
+	ErrorTransactionNotFound                      = NewError("Transaction not found", http.StatusNotFound, nil)
+	ErrorOperationTypeNotFound                    = NewError("Operation type not found", http.StatusNotFound, nil)
+	ErrorAmountMustBePositiveForThatOperationType = NewError("Amount must be positive for that operation type", http.StatusBadRequest, nil)
+	ErrorAmountMustBeNegativeForThatOperationType = NewError("Amount must be negative for that operation type", http.StatusBadRequest, nil)
 )
 
 func NewError(message string, code int, errors []error) error {
