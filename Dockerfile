@@ -8,8 +8,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /docker-gs-ping cmd/gobank/main.go
-
 EXPOSE 8080
 
-CMD [ "/docker-gs-ping" ]
+ENTRYPOINT ["go", "run", "cmd/gobank/main.go"]
