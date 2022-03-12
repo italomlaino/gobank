@@ -1,6 +1,10 @@
 package gorm
 
 import (
+	"errors"
+
+	"gorm.io/gorm"
+
 	"github.com/italomlaino/gobank/domain"
 )
 
@@ -31,9 +35,13 @@ func (r *AccountRepository) Create(documentNumber int64) (*domain.Account, error
 
 func (r *AccountRepository) FetchByID(id int64) (*domain.Account, error) {
 	var entity Account
-	result := DB.First(&entity, id)
-	if result.Error != nil {
-		return nil, result.Error
+	err := DB.First(&entity, id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, domain.ErrorAccountNotFound
+		}
+
+		return nil, err
 	}
 
 	account := domain.Account(entity)

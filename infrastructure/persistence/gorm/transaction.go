@@ -1,7 +1,10 @@
 package gorm
 
 import (
+	"errors"
 	"time"
+
+	"gorm.io/gorm"
 
 	"github.com/italomlaino/gobank/domain"
 )
@@ -32,7 +35,7 @@ func (r *TransactionRepository) Create(accountID int64, operationTypeID domain.O
 		return nil, err
 	}
 	if !exists {
-		return nil, domain.ErrAccountNotFound
+		return nil, domain.ErrorAccountNotFound
 	}
 
 	entity := Transaction{
@@ -52,9 +55,13 @@ func (r *TransactionRepository) Create(accountID int64, operationTypeID domain.O
 
 func (r *TransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
 	var entities []Transaction
-	result := DB.Find(&entities, "account_id = ?", accountID)
-	if result.Error != nil {
-		return nil, result.Error
+	err := DB.Find(&entities, "account_id = ?", accountID).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, domain.ErrorTransactionNotFound
+		}
+
+		return nil, err
 	}
 
 	transactions := make([]domain.Transaction, len(entities))

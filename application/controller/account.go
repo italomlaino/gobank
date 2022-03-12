@@ -9,11 +9,11 @@ import (
 )
 
 type CreateAccountDTO struct {
-	DocumentNumber int64 `json:"document_number" binding:"required,number,min=0"`
+	DocumentNumber int64 `json:"document_number" binding:"required,number,min=1"`
 }
 
 type FetchAccountByIdDTO struct {
-	ID int64 `uri:"accountId" binding:"required,number"`
+	ID int64 `uri:"accountId" binding:"required,number,min=1"`
 }
 
 type AccountController interface {

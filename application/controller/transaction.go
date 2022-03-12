@@ -9,13 +9,13 @@ import (
 )
 
 type CreateTransactionDTO struct {
-	AccountID       int64                `json:"account_id" binding:"required,number"`
+	AccountID       int64                `json:"account_id" binding:"required,number,min=1"`
 	OperationTypeID domain.OperationType `json:"operation_type_id" binding:"required,number,min=1,max=4"`
-	Amount          int64                `json:"amount" binding:"required,number"`
+	Amount          int64                `json:"amount" binding:"required,number,min=1"`
 }
 
 type FetchTransactionByAccountIdDTO struct {
-	AccountID int64 `uri:"accountId" binding:"required,number"`
+	AccountID int64 `uri:"accountId" binding:"required,number,min=1"`
 }
 
 type TransactionController interface {
