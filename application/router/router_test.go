@@ -60,7 +60,7 @@ func TestStart(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
-	resp, err = http.Get("http://localhost:8080/transactions/1")
+	resp, err = http.Get("http://localhost:8080/accounts/1/transactions")
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
