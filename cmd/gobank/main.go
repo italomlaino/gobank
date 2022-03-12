@@ -10,6 +10,9 @@ import (
 )
 
 func main() {
+	gorm.Open()
+	defer gorm.Close()
+
 	accountRepository := gorm.NewGormAccountRepository()
 	accountService := domain.NewAccountService(accountRepository)
 	accountController := controller.NewAccountController(accountService)

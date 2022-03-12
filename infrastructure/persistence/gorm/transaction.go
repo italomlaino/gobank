@@ -22,14 +22,8 @@ func NewGormTransactionRepository() *GormTransactionRepository {
 }
 
 func (r *GormTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
-	db, sqlDB, err := Open()
-	if err != nil {
-		return nil, err
-	}
-	defer sqlDB.Close()
-
 	var exists bool
-	err = db.Model(&GormAccount{}).
+	err := DB.Model(&GormAccount{}).
 		Select("count(*) > 0").
 		Where("id = ?", accountID).
 		Find(&exists).
@@ -47,7 +41,7 @@ func (r *GormTransactionRepository) Create(accountID int64, operationTypeID doma
 		Amount:          amount,
 		EventData:       eventData,
 	}
-	result := db.Create(&entity)
+	result := DB.Create(&entity)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -57,14 +51,8 @@ func (r *GormTransactionRepository) Create(accountID int64, operationTypeID doma
 }
 
 func (r *GormTransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
-	db, sqlDB, err := Open()
-	if err != nil {
-		return nil, err
-	}
-	defer sqlDB.Close()
-
 	var entities []GormTransaction
-	result := db.Find(&entities, "account_id = ?", accountID)
+	result := DB.Find(&entities, "account_id = ?", accountID)
 	if result.Error != nil {
 		return nil, result.Error
 	}

@@ -17,16 +17,10 @@ func NewGormAccountRepository() *GormAccountRepository {
 }
 
 func (repository *GormAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
-	db, sqlDB, err := Open()
-	if err != nil {
-		return nil, err
-	}
-	defer sqlDB.Close()
-
 	entity := GormAccount{
 		DocumentNumber: documentNumber,
 	}
-	result := db.Create(&entity)
+	result := DB.Create(&entity)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -36,14 +30,8 @@ func (repository *GormAccountRepository) Create(documentNumber int64) (*domain.A
 }
 
 func (repository *GormAccountRepository) FetchByID(id int64) (*domain.Account, error) {
-	db, sqlDB, err := Open()
-	if err != nil {
-		return nil, err
-	}
-	defer sqlDB.Close()
-
 	var entity GormAccount
-	result := db.First(&entity, id)
+	result := DB.First(&entity, id)
 	if result.Error != nil {
 		return nil, result.Error
 	}

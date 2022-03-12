@@ -12,10 +12,7 @@ func NewMysqlAccountRepository() *MysqlAccountRepository {
 }
 
 func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.Account, error) {
-	db := Connect()
-	defer db.Close()
-
-	statement, err := db.Prepare("INSERT INTO accounts(document_number) VALUES (?)")
+	statement, err := DB.Prepare("INSERT INTO accounts(document_number) VALUES (?)")
 	if err != nil {
 		return nil, err
 	}
@@ -37,10 +34,7 @@ func (repository *MysqlAccountRepository) Create(documentNumber int64) (*domain.
 }
 
 func (repository *MysqlAccountRepository) FetchByID(id int64) (*domain.Account, error) {
-	db := Connect()
-	defer db.Close()
-
-	statement, err := db.Query("SELECT * FROM accounts WHERE id = ?", id)
+	statement, err := DB.Query("SELECT * FROM accounts WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}

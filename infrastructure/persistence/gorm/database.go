@@ -10,7 +10,10 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-func Open() (*gorm.DB, *sql.DB, error) {
+var DB *gorm.DB
+var SqlDB *sql.DB
+
+func Open() {
 	dsn := os.Getenv("DATASOURCE_URL")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
@@ -18,8 +21,19 @@ func Open() (*gorm.DB, *sql.DB, error) {
 		},
 	})
 	if err != nil {
-		return nil, nil, err
+		panic(err)
 	}
 	sqlDB, err := db.DB()
-	return db, sqlDB, err
+	if err != nil {
+		panic(err)
+	}
+
+	DB = db
+	SqlDB = sqlDB
+}
+
+func Close() {
+	SqlDB.Close()
+	DB = nil
+	SqlDB = nil
 }

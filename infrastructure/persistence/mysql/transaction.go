@@ -14,10 +14,7 @@ func NewMysqlTransactionRepository() *MysqlTransactionRepository {
 }
 
 func (repository *MysqlTransactionRepository) Create(accountID int64, operationTypeID domain.OperationType, amount int64, eventData time.Time) (*domain.Transaction, error) {
-	db := Connect()
-	defer db.Close()
-
-	statement, err := db.Prepare("INSERT INTO transactions(account_id, operation_type_id, amount, event_data) VALUES (?,?,?,?)")
+	statement, err := DB.Prepare("INSERT INTO transactions(account_id, operation_type_id, amount, event_data) VALUES (?,?,?,?)")
 	if err != nil {
 		return nil, err
 	}
@@ -42,10 +39,7 @@ func (repository *MysqlTransactionRepository) Create(accountID int64, operationT
 }
 
 func (repository *MysqlTransactionRepository) FetchByAccountID(accountID int64) (*[]domain.Transaction, error) {
-	db := Connect()
-	defer db.Close()
-
-	statement, err := db.Query("SELECT * FROM transactions WHERE account_id = ?", accountID)
+	statement, err := DB.Query("SELECT * FROM transactions WHERE account_id = ?", accountID)
 	if err != nil {
 		return nil, err
 	}
