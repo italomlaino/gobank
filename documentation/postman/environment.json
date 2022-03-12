@@ -1,0 +1,24 @@
+{
+	"id": "757546b0-5a55-4acf-9796-ff8494bafca4",
+	"name": "gobank",
+	"values": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080",
+			"enabled": true
+		},
+		{
+			"key": "account_id",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "document_number",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2022-03-12T07:55:46.667Z",
+	"_postman_exported_using": "Postman/7.36.5"
+}
