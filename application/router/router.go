@@ -29,6 +29,7 @@ func (r *Router) Start() {
 
 func (r *Router) create() *gin.Engine {
 	router := gin.Default()
+	router.Use(ErrorMiddleware())
 	router.POST("/accounts", r.AccountController.CreateAccountHandler())
 	router.GET("/accounts/:accountId", r.AccountController.FetchAccountHandler())
 	router.POST("/transactions", r.TransactionController.CreateTransationHandler())
