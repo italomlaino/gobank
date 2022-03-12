@@ -19,7 +19,7 @@ type Mock struct {
 	mock.Mock
 }
 
-func (m *Mock) Handle(c *gin.Context) {
+func (m *Mock) Handle(*gin.Context) {
 	m.Called()
 }
 
@@ -39,7 +39,10 @@ func TestStart(t *testing.T) {
 	transactionController.On("CreateHandler").Return(handler.Handle)
 	transactionController.On("FetchByAccountIDHandler").Return(handler.Handle)
 
-	subject := router.NewRouter("8080", accountController, transactionController)
+	port := "9050"
+	host := "http://localhost:" + port
+
+	subject := router.NewRouter(port, accountController, transactionController)
 	go func() {
 		subject.Start()
 	}()
@@ -48,19 +51,20 @@ func TestStart(t *testing.T) {
 
 	assert := assert.New(t)
 	json, _ := json.Marshal(map[string]string{})
-	resp, err := http.Post("http://localhost:8080/accounts", "application/json", bytes.NewBuffer(json))
+	body := bytes.NewBuffer(json)
+	resp, err := http.Post(host+"/accounts", "application/json", body)
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
-	resp, err = http.Get("http://localhost:8080/accounts/1")
+	resp, err = http.Get(host + "/accounts/1")
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
-	resp, err = http.Post("http://localhost:8080/transactions", "application/json", bytes.NewBuffer(json))
+	resp, err = http.Get(host + "/accounts/1/transactions")
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
-	resp, err = http.Get("http://localhost:8080/accounts/1/transactions")
+	resp, err = http.Post(host+"/transactions", "application/json", body)
 	assert.Nil(err)
 	assert.Equal(200, resp.StatusCode)
 
